@@ -24,7 +24,7 @@ function StoryPage({ params: { id } }: StoryPageProps) {
 
 export default StoryPage;
 
-export async function generateStaticProps() {
+export async function generateStaticParams() {
   const stories = getAllStories();
 
   // Explanation: We need to return an array of objects with the id
