@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import {
   Select,
@@ -12,6 +13,8 @@ import {
 import { Textarea } from "./ui/textarea";
 import { Frame } from "@gptscript-ai/gptscript";
 import renderEventMessage from "@/lib/renderEventMessage";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const storiesPath = "public/stories";
 
@@ -23,7 +26,7 @@ function StoryWriter() {
   const [runFinished, setRunFinished] = useState<boolean | null>(null);
   const [currentTool, setCurrentTool] = useState("");
   const [events, setEvents] = useState<Frame[]>([]);
-
+  const router = useRouter()
   async function runScript() {
     setRunStarted(true);
     setRunFinished(false);
@@ -92,6 +95,23 @@ function StoryWriter() {
     }
   }
 
+
+  useEffect(() => {
+      if(runFinished){
+        toast.success("Story generated successfully", {
+          action: (
+            <Button onClick={() => router.push("/stories")}
+            className="bg-purple-500 ml-auto"
+            >
+              View Stories
+            </Button>
+          )
+        })
+      }
+
+  }, [runFinished, router])
+  
+
   return (
     <div className="flex flex-col container">
       <section className="flex-1 flex flex-col border border-purple-300 rounded-md p-10 space-y-2 ">
@@ -153,7 +173,6 @@ function StoryWriter() {
                 <span className="mr-5">{">>"}</span>
                 {renderEventMessage(event)}
               </div>
-              
             ))}
           </div>
 

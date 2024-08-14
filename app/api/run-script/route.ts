@@ -1,4 +1,4 @@
-import { NextRequest } from "next/server";
+import { type NextRequest } from 'next/server'
 import { RunEventType, RunOpts } from "@gptscript-ai/gptscript";
 import g from "@/lib/gptScriptInstance";
 
@@ -35,13 +35,12 @@ export async function POST(request: NextRequest) {
     });
 
     return new Response(stream, {
-        headers: {
-            'Content-Type': 'text/event-stream',
-            'Cache-Control': 'no-cache',
-            Connection: "keep-alive",
-        }
-    })
-
+      headers: {
+        "Content-Type": "text/event-stream",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
+      },
+    });
   } catch (error) {
     return new Response(JSON.stringify({ error: error }), { status: 500 });
   }
